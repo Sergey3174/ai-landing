@@ -34,7 +34,7 @@ export function useLandingEffects() {
       if ("IntersectionObserver" in window) {
         const targets = Array.from(
           document.querySelectorAll<HTMLElement>(
-            "#pricing > .section-heading, .prices, .pricing-note, .faq, .contact, .footer-top, .footer-wordmark",
+            "#cases > .section-heading, #cases .case-card, .cases-note, #pricing > .section-heading, .prices, .pricing-note, .faq, .contact, .footer-top, .footer-wordmark",
           ),
         );
         const observer = new IntersectionObserver(
