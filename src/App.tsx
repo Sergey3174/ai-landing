@@ -3,7 +3,6 @@ import {
   ArrowUpRightIcon,
   ArrowDownIcon,
   ArrowUpIcon,
-  DownloadSimpleIcon,
   CaretDownIcon,
   CheckIcon,
   CheckCircleIcon,
@@ -17,6 +16,10 @@ import {
   ShareNetworkIcon,
   PhoneCallIcon,
   EnvelopeSimpleIcon,
+  BriefcaseIcon,
+  PathIcon,
+  TagIcon,
+  QuestionIcon,
 } from "@phosphor-icons/react";
 import "./App.css";
 import { useLandingEffects } from "./useLandingEffects";
@@ -60,7 +63,7 @@ const cases = [
     icon: ShareNetworkIcon,
     title: "Ведение соцсетей",
     description:
-      "Готовит контент-план и черновики постов, адаптирует материалы для Instagram, Facebook и YouTube, помогает оформлять страницы и группы. Публикации проходят ваше согласование.",
+      "Готовит контент-план и черновики постов, адаптирует материалы для Instagram и YouTube, помогает оформлять страницы и группы. Публикации проходят ваше согласование.",
     tags: ["Контент-план", "Посты", "Оформление"],
     output: "План и посты на согласование",
     cta: "Обсудить соцсети",
@@ -128,25 +131,7 @@ function App() {
   const [menu, setMenu] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const [plan, setPlan] = useState("Пилот");
-  const [ready, setReady] = useState(false);
   const s = scenarios[active];
-  function downloadBrief(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const blob = new Blob(
-      [
-        `Бриф на AI-интеграцию\nФормат: ${plan}\nИмя: ${data.get("name")}\nКонтакт: ${data.get("contact")}\nЗадача: ${data.get("task")}`,
-      ],
-      { type: "text/plain;charset=utf-8" },
-    );
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "ai-brief.txt";
-    link.click();
-    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
-    setReady(true);
-  }
   return (
     <>
       <a className="skip-link" href="#main-content">
@@ -161,9 +146,8 @@ function App() {
           }
         }}
       >
-        <a className="brand" href="#" aria-label="Контур AI — главная">
-          <span className="brand-mark">✳</span> контур
-          <span className="brand-ai">ai</span>
+        <a className="brand" href="#" aria-label="Бизнес Контур — главная">
+          <span className="brand-mark">✳</span> бизнес контур
         </a>
         <nav
           id="main-navigation"
@@ -207,6 +191,20 @@ function App() {
           )}
         </button>
       </header>
+      <nav className="mobile-bottom-nav" aria-label="Мобильная навигация">
+        {[
+          { label: "Решения", id: "solutions", icon: CpuIcon },
+          { label: "Кейсы", id: "cases", icon: BriefcaseIcon },
+          { label: "Как работаем", id: "process", icon: PathIcon },
+          { label: "Стоимость", id: "pricing", icon: TagIcon },
+          { label: "Вопросы", id: "faq", icon: QuestionIcon },
+        ].map(({ label, id, icon: Icon }) => (
+          <a key={id} href={`#${id}`}>
+            <Icon size={22} aria-hidden="true" />
+            <span>{label}</span>
+          </a>
+        ))}
+      </nav>
       <main id="main-content" tabIndex={-1}>
         <section className="hero hero-spotlight" aria-labelledby="hero-title">
           <div className="hero-atmosphere" aria-hidden="true">
@@ -218,7 +216,7 @@ function App() {
           </div>
           <div className="hero-copy">
             <div className="hero-signature">
-              <span>✳</span> контур ai
+              <span>✳</span> бизнес контур
             </div>
             <h1 id="hero-title">
               Больше возможностей.
@@ -240,9 +238,9 @@ function App() {
                 Посмотреть решения
               </a>
             </div>
-            <div className="hero-note">
+            {/* <div className="hero-note">
               Начнём с вашей задачи. Определим, где AI принесёт пользу.
-            </div>
+            </div> */}
           </div>
           <a
             className="hero-scroll"
@@ -260,14 +258,11 @@ function App() {
             <br />
             которыми вы уже пользуетесь
           </p>
-          <div>
-            Битрикс<span>24</span>
-          </div>
-          <div>
-            amo<span>CRM</span>
-          </div>
           <div className="telegram">Telegram</div>
-          <div>1С</div>
+          <div>WhatsApp</div>
+          <div>Viber</div>
+          <div>Facebook</div>
+          <div>Gmail</div>
           <div className="notion">Notion</div>
           <span className="more">и другими через API</span>
         </section>
@@ -370,7 +365,7 @@ function App() {
                   <i />
                   <i />
                 </span>
-                <span>Контур / {s.name}</span>
+                <span>Бизнес Контур / {s.name}</span>
                 <span className="demo-mode">Демо</span>
               </div>
               <div
@@ -416,7 +411,7 @@ function App() {
           id="cases"
           aria-labelledby="cases-title"
         >
-          <div className="section-heading">
+          {/* <div className="section-heading">
             <div>
               <h2 id="cases-title">
                 AI берёт на себя рутину.
@@ -428,7 +423,7 @@ function App() {
               Подключаем AI к привычным каналам и системам — с проверкой
               сотрудником там, где она нужна.
             </p>
-          </div>
+          </div> */}
           <div className="case-grid">
             {cases.map((item, index) => (
               <article
@@ -600,7 +595,7 @@ function App() {
                   ))}
                 </ul>
                 <a
-                  className={"button " + (i === 1 ? "primary" : "secondary")}
+                  className="button primary"
                   href="#contact"
                   onClick={() => setPlan(p.name)}
                 >
@@ -675,7 +670,7 @@ function App() {
             </p>
             <div className="contact-symbol">✳</div>
           </div>
-          <form onSubmit={downloadBrief} onChange={() => setReady(false)}>
+          <form onSubmit={(event) => event.preventDefault()}>
             <label>
               Как к вам обращаться
               <input
@@ -722,21 +717,16 @@ function App() {
                 maxLength={3000}
               />
             </label>
-            <button className="button primary" type="submit">
-              {ready ? "Скачать бриф ещё раз" : "Скачать бриф"}{" "}
+            <button className="button primary" type="button">
+              Обсудить бриф{" "}
               <span aria-hidden="true">
-                <DownloadSimpleIcon
+                <ArrowUpRightIcon
                   className="ui-icon"
                   size={20}
                   weight="regular"
                 />
               </span>
             </button>
-            <p className="form-note" role="status">
-              {ready
-                ? "Скачивание началось. Бриф сохранится в папку загрузок."
-                : "Бриф сохранится файлом на вашем устройстве. Данные никуда не отправляются."}
-            </p>
           </form>
         </section>
       </main>
@@ -786,17 +776,15 @@ function App() {
           <a
             href="#"
             className="footer-wordmark"
-            aria-label="Контур AI — вернуться в начало"
+            aria-label="Бизнес Контур — вернуться в начало"
           >
             <span className="footer-flower" aria-hidden="true">
               ✳
             </span>
-            <span>
-              контур<span className="footer-ai">ai</span>
-            </span>
+            <span>бизнес контур</span>
           </a>
           <div className="footer-bottom">
-            <small>© {new Date().getFullYear()} Контур AI</small>
+            <small>© {new Date().getFullYear()} Бизнес Контур</small>
             <p>Искусственный интеллект. Практическая польза.</p>
             <a href="#">
               Наверх{" "}
