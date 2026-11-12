@@ -23,9 +23,8 @@ import {
 } from "@phosphor-icons/react";
 import "./App.css";
 import { useLandingEffects } from "./useLandingEffects";
-import instagramArt from "./assets/instagram.svg";
 
-const scenarios = [
+const baseScenarios = [
   {
     name: "Продажи",
     icon: ChartLineUpIcon,
@@ -106,23 +105,19 @@ const cases = [
   },
 ];
 
-function moveCaseSpotlight(event: React.PointerEvent<HTMLElement>) {
-  if (
-    event.pointerType === "touch" ||
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  ) {
-    return;
-  }
-  const bounds = event.currentTarget.getBoundingClientRect();
-  event.currentTarget.style.setProperty(
-    "--spot-x",
-    `${event.clientX - bounds.left}px`,
-  );
-  event.currentTarget.style.setProperty(
-    "--spot-y",
-    `${event.clientY - bounds.top}px`,
-  );
-}
+const scenarios = [
+  ...baseScenarios,
+  ...cases.filter((_, index) => index !== 2).map((item, index) => ({
+    name: ["Соцсети", "Поиск клиентов", "Звонки", "Почта"][index],
+    icon: item.icon,
+    title: item.title,
+    text: item.description,
+    input: ["Подготовь контент-план на неделю", "Найди компании по нашему профилю клиента", "Прими заказ из записи звонка", "Разбери входящие обращения за сегодня"][index],
+    action: ["Учтены темы и формат площадок", "Контакты отобраны по критериям", "Выделены детали и срочность заказа", "Определены темы, приоритеты и сроки"][index],
+    result: item.output,
+    detail: "Результат — на проверку сотруднику",
+  })),
+];
 
 function App() {
   useLandingEffects();
@@ -278,6 +273,7 @@ function App() {
               <br className="desktop" /> принесёт понятную пользу.
             </p>
           </div>
+          <span id="cases" aria-hidden="true" />
           <div
             className="solution-tabs"
             role="tablist"
@@ -340,12 +336,7 @@ function App() {
           >
             <div>
               <span className="subtle">
-                AI для{" "}
-                {active === 0
-                  ? "отдела продаж"
-                  : active === 1
-                    ? "службы поддержки"
-                    : "работы с документами"}
+                Направление · {s.name}
               </span>
               <h3>{s.title}</h3>
               <p>{s.text}</p>
@@ -405,88 +396,6 @@ function App() {
               </div>
             </div>
           </div>
-        </section>
-        <section
-          className="section wrap cases"
-          id="cases"
-          aria-labelledby="cases-title"
-        >
-          {/* <div className="section-heading">
-            <div>
-              <h2 id="cases-title">
-                AI берёт на себя рутину.
-                <br />
-                Команда — важные решения.
-              </h2>
-            </div>
-            <p>
-              Подключаем AI к привычным каналам и системам — с проверкой
-              сотрудником там, где она нужна.
-            </p>
-          </div> */}
-          <div className="case-grid">
-            {cases.map((item, index) => (
-              <article
-                className="case-card"
-                key={item.title}
-                onPointerMove={moveCaseSpotlight}
-              >
-                {index === 0 ? (
-                  <img
-                    className="case-art"
-                    src={instagramArt}
-                    alt=""
-                    aria-hidden="true"
-                  />
-                ) : (
-                  <item.icon
-                    className="case-art-icon"
-                    size={190}
-                    weight="thin"
-                    aria-hidden="true"
-                  />
-                )}
-                <div className="case-card-top">
-                  <item.icon
-                    className="case-icon ui-icon"
-                    size={30}
-                    weight="regular"
-                    aria-hidden="true"
-                  />
-                </div>
-                <h3>{item.title}</h3>
-                <p>{item.description}</p>
-                <div className="case-tags" aria-label="Возможности сценария">
-                  {item.tags.map((tag) => (
-                    <span key={tag}>{tag}</span>
-                  ))}
-                </div>
-                <div className="case-card-bottom">
-                  <div className="case-result">
-                    <span>На выходе</span>
-                    <strong>{item.output}</strong>
-                  </div>
-                  <a
-                    href="#contact"
-                    className="case-cta"
-                    aria-label={`Обсудить сценарий: ${item.title}`}
-                  >
-                    {item.cta}
-                    <ArrowUpRightIcon
-                      className="ui-icon"
-                      size={18}
-                      aria-hidden="true"
-                    />
-                  </a>
-                </div>
-              </article>
-            ))}
-          </div>
-          {/* <p className="cases-note">
-            Это примеры сценариев, а не отчёты о внедрениях. Интеграции и правила
-            автоматизации согласуем заранее; важные решения и нестандартные
-            ситуации остаются под контролем вашей команды.
-          </p> */}
         </section>
         <section className="process-section" id="process">
           <div className="wrap">
