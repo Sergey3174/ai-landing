@@ -235,3 +235,11 @@ footer.site-footer{display:block;position:relative;isolation:isolate;overflow:hi
  .solution-tabs button,.solution-tabs button:nth-child(n+5){grid-column:auto;min-width:0;min-height:54px;padding:12px;font-size:12px;border-radius:12px;gap:8px}
  .solution-tabs button:last-child{grid-column:1/-1;justify-content:center}
 }
+@media(max-width:720px){
+ .header .brand{font-size:21px;letter-spacing:-.8px;gap:5px;white-space:nowrap}
+ .header .brand-mark{font-size:30px}
+}
+@media(max-width:380px){
+ .header .brand{font-size:18px;gap:4px}
+ .header .brand-mark{font-size:26px}
+}
