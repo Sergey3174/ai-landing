@@ -168,7 +168,6 @@ function App() {
     dialog.addEventListener("close", restoreScroll);
     mobile.addEventListener("change", resize);
     return () => {
-
       dialog.removeEventListener("close", restoreScroll);
       mobile.removeEventListener("change", resize);
       if (dialog.open) {
@@ -193,7 +192,15 @@ function App() {
         }}
       >
         <a className="brand" href="#" aria-label="Бизнес контур — главная">
-          <span className="brand-mark"><img className="brand-symbol" src="/favicon.svg?v=3" alt="" aria-hidden="true" /></span> Бизнес контур
+          <span className="brand-mark">
+            <img
+              className="brand-symbol"
+              src="/favicon.svg?v=3"
+              alt=""
+              aria-hidden="true"
+            />
+          </span>{" "}
+          Бизнес контур
         </a>
         <nav
           id="main-navigation"
@@ -260,7 +267,15 @@ function App() {
           </div>
           <div className="hero-copy">
             <div className="hero-signature">
-              <span><img className="brand-symbol" src="/favicon.svg?v=3" alt="" aria-hidden="true" /></span> Бизнес контур
+              <span>
+                <img
+                  className="brand-symbol"
+                  src="/favicon.svg?v=3"
+                  alt=""
+                  aria-hidden="true"
+                />
+              </span>{" "}
+              Бизнес контур
             </div>
             <h1 id="hero-title">
               Больше возможностей.
@@ -453,7 +468,15 @@ function App() {
         >
           <div className="company-heading">
             <span className="company-eyebrow">
-              <span aria-hidden="true"><img className="brand-symbol" src="/favicon.svg?v=3" alt="" aria-hidden="true" /></span> О компании
+              <span aria-hidden="true">
+                <img
+                  className="brand-symbol"
+                  src="/favicon.svg?v=3"
+                  alt=""
+                  aria-hidden="true"
+                />
+              </span>{" "}
+              О компании
             </span>
             <h2 id="company-title">
               Соединяем AI
@@ -639,8 +662,11 @@ function App() {
                 </ul>
                 <a
                   className="button primary"
-                  href="#contact" onClick={(event) => { setPlan(p.name); openBrief(event); }}
-                  
+                  href="#contact"
+                  onClick={(event) => {
+                    setPlan(p.name);
+                    openBrief(event);
+                  }}
                 >
                   Обсудить {p.name.toLowerCase()}{" "}
                   <span>
@@ -728,7 +754,14 @@ function App() {
                 <br />
                 Без сложных технических заданий.
               </p>
-              <div className="contact-symbol"><img className="brand-symbol" src="/favicon.svg?v=3" alt="" aria-hidden="true" /></div>
+              <div className="contact-symbol">
+                <img
+                  className="brand-symbol"
+                  src="/favicon.svg?v=3"
+                  alt=""
+                  aria-hidden="true"
+                />
+              </div>
             </div>
             <form onSubmit={(event) => event.preventDefault()}>
               <label>
@@ -742,12 +775,12 @@ function App() {
                 />
               </label>
               <label>
-                Email или Telegram
+                Email, Telegram или WhatsApp
                 <input
                   autoCapitalize="none"
                   spellCheck={false}
                   name="contact"
-                  placeholder="name@company.ru или @username"
+                  placeholder="Email, @username или WhatsApp"
                   required
                   maxLength={150}
                 />
@@ -842,7 +875,12 @@ function App() {
             aria-label="Бизнес контур — вернуться в начало"
           >
             <span className="footer-flower" aria-hidden="true">
-              <img className="brand-symbol" src="/favicon.svg?v=3" alt="" aria-hidden="true" />
+              <img
+                className="brand-symbol"
+                src="/favicon.svg?v=3"
+                alt=""
+                aria-hidden="true"
+              />
             </span>
             <span>Бизнес контур</span>
           </a>
@@ -850,10 +888,22 @@ function App() {
             <small>© {new Date().getFullYear()} Бизнес контур</small>
             <p>Искусственный интеллект. Практическая польза.</p>
             <nav className="footer-socials" aria-label="Социальные сети">
-              <a href="https://www.facebook.com/leverageindogroup" target="_blank" rel="noopener noreferrer" aria-label="Facebook — открыть в новой вкладке" title="Facebook">
+              <a
+                href="https://www.facebook.com/leverageindogroup"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook — открыть в новой вкладке"
+                title="Facebook"
+              >
                 <FacebookLogoIcon size={24} weight="fill" aria-hidden="true" />
               </a>
-              <a href="https://www.youtube.com/@I_am_Kramer" target="_blank" rel="noopener noreferrer" aria-label="YouTube — открыть в новой вкладке" title="YouTube">
+              <a
+                href="https://www.youtube.com/@I_am_Kramer"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="YouTube — открыть в новой вкладке"
+                title="YouTube"
+              >
                 <YoutubeLogoIcon size={26} weight="fill" aria-hidden="true" />
               </a>
             </nav>
