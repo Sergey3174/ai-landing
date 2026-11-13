@@ -7,5 +7,6 @@ export default defineConfig({
   plugins: [react(), babel({ presets: [reactCompilerPreset()] })],
   server: {
     host: true,
+    allowedHosts: ["arden-strychnic-pleasingly.ngrok-free.dev"],
   },
 });

@@ -193,7 +193,7 @@ function App() {
         }}
       >
         <a className="brand" href="#" aria-label="Бизнес контур — главная">
-          <span className="brand-mark">✳</span> Бизнес контур
+          <span className="brand-mark"><img className="brand-symbol" src="/favicon.svg?v=3" alt="" aria-hidden="true" /></span> Бизнес контур
         </a>
         <nav
           id="main-navigation"
@@ -260,7 +260,7 @@ function App() {
           </div>
           <div className="hero-copy">
             <div className="hero-signature">
-              <span>✳</span> Бизнес контур
+              <span><img className="brand-symbol" src="/favicon.svg?v=3" alt="" aria-hidden="true" /></span> Бизнес контур
             </div>
             <h1 id="hero-title">
               Больше возможностей.
@@ -453,7 +453,7 @@ function App() {
         >
           <div className="company-heading">
             <span className="company-eyebrow">
-              <span aria-hidden="true">✳</span> О компании
+              <span aria-hidden="true"><img className="brand-symbol" src="/favicon.svg?v=3" alt="" aria-hidden="true" /></span> О компании
             </span>
             <h2 id="company-title">
               Соединяем AI
@@ -728,7 +728,7 @@ function App() {
                 <br />
                 Без сложных технических заданий.
               </p>
-              <div className="contact-symbol">✳</div>
+              <div className="contact-symbol"><img className="brand-symbol" src="/favicon.svg?v=3" alt="" aria-hidden="true" /></div>
             </div>
             <form onSubmit={(event) => event.preventDefault()}>
               <label>
@@ -842,7 +842,7 @@ function App() {
             aria-label="Бизнес контур — вернуться в начало"
           >
             <span className="footer-flower" aria-hidden="true">
-              ✳
+              <img className="brand-symbol" src="/favicon.svg?v=3" alt="" aria-hidden="true" />
             </span>
             <span>Бизнес контур</span>
           </a>

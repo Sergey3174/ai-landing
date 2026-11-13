@@ -292,3 +292,7 @@ footer.site-footer{display:block;position:relative;isolation:isolate;overflow:hi
 @media(max-width:720px){
  .brief-dialog[open] .contact{opacity:1;transform:none;transition:none}
 }
+
+/* Shared logo artwork, matching the transparent favicon. */
+.brand-symbol{display:inline-block;width:1em;height:1em;max-width:none;vertical-align:-.12em;flex-shrink:0}
+.brand-mark,.footer-flower{display:inline-flex;align-items:center;justify-content:center}
