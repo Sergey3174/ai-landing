@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowUpRightIcon,
   ArrowDownIcon,
@@ -7,6 +7,8 @@ import {
   CheckIcon,
   CheckCircleIcon,
   ChartLineUpIcon,
+  UserFocusIcon,
+  ChartBarIcon,
   HeadsetIcon,
   FilesIcon,
   CpuIcon,
@@ -18,8 +20,9 @@ import {
   EnvelopeSimpleIcon,
   BriefcaseIcon,
   PathIcon,
-  TagIcon,
   QuestionIcon,
+  FacebookLogoIcon,
+  YoutubeLogoIcon,
 } from "@phosphor-icons/react";
 import "./App.css";
 import { useLandingEffects } from "./useLandingEffects";
@@ -68,7 +71,7 @@ const cases = [
     cta: "Обсудить соцсети",
   },
   {
-    icon: ChartLineUpIcon,
+    icon: UserFocusIcon,
     title: "Поиск клиентов и переписка",
     description:
       "Находит потенциальных клиентов по вашим критериям, помогает вести персональную переписку и фиксирует ответы. Менеджеру передаёт заинтересованные контакты; исходящие сообщения — по согласованному сценарию.",
@@ -77,13 +80,13 @@ const cases = [
     cta: "Обсудить поиск",
   },
   {
-    icon: FilesIcon,
-    title: "Анализ документов и данных",
+    icon: ChartBarIcon,
+    title: "Анализ звонков, работы менеджеров и KPI",
     description:
-      "Извлекает данные из документов и входящих сообщений, сверяет их с заданными правилами. Неполные и сомнительные значения отмечает для проверки сотрудником.",
-    tags: ["Распознавание", "Проверка", "Сводки"],
-    output: "Структурированные данные и список проверок",
-    cta: "Обсудить документы",
+      "Разбирает записи звонков: как менеджер выявляет потребность, работает с возражениями и договаривается о следующем шаге. По данным CRM собирает KPI — количество контактов, скорость обработки заявок и конверсию в сделки. Показывает руководителю сильные стороны и точки роста команды с примерами из разговоров.",
+    tags: ["Анализ звонков", "Качество работы", "KPI команды"],
+    output: "Отчёт по менеджерам: KPI, примеры и рекомендации",
+    cta: "Обсудить анализ",
   },
   {
     icon: PhoneCallIcon,
@@ -107,13 +110,25 @@ const cases = [
 
 const scenarios = [
   ...baseScenarios,
-  ...cases.filter((_, index) => index !== 2).map((item, index) => ({
-    name: ["Соцсети", "Поиск клиентов", "Звонки", "Почта"][index],
+  ...cases.map((item, index) => ({
+    name: ["Соцсети", "Поиск клиентов", "Анализ", "Звонки", "Почта"][index],
     icon: item.icon,
     title: item.title,
     text: item.description,
-    input: ["Подготовь контент-план на неделю", "Найди компании по нашему профилю клиента", "Прими заказ из записи звонка", "Разбери входящие обращения за сегодня"][index],
-    action: ["Учтены темы и формат площадок", "Контакты отобраны по критериям", "Выделены детали и срочность заказа", "Определены темы, приоритеты и сроки"][index],
+    input: [
+      "Подготовь контент-план на неделю",
+      "Найди компании по нашему профилю клиента",
+      "Проанализируй звонки менеджеров и KPI за неделю",
+      "Прими заказ из записи звонка",
+      "Разбери входящие обращения за сегодня",
+    ][index],
+    action: [
+      "Учтены темы и формат площадок",
+      "Контакты отобраны по критериям",
+      "Разобраны звонки · Сопоставлены показатели CRM",
+      "Выделены детали и срочность заказа",
+      "Определены темы, приоритеты и сроки",
+    ][index],
     result: item.output,
     detail: "Результат — на проверку сотруднику",
   })),
@@ -126,6 +141,42 @@ function App() {
   const [menu, setMenu] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const [plan, setPlan] = useState("Пилот");
+  const briefDialogRef = useRef<HTMLDialogElement>(null);
+  const briefOverflowRef = useRef("");
+  function openBrief(event: React.MouseEvent<HTMLAnchorElement>) {
+    if (!window.matchMedia("(max-width:720px)").matches) return;
+    event.preventDefault();
+    const dialog = briefDialogRef.current;
+    if (!dialog || dialog.open) return;
+    briefOverflowRef.current = document.body.style.overflow;
+    dialog.showModal();
+    document.body.style.overflow = "hidden";
+  }
+  useEffect(() => {
+    const dialog = briefDialogRef.current;
+    if (!dialog) return;
+    const mobile = window.matchMedia("(max-width:720px)");
+
+    const restoreScroll = () => {
+      document.body.style.overflow = briefOverflowRef.current;
+    };
+
+    const resize = () => {
+      if (!mobile.matches && dialog.open) dialog.close();
+    };
+
+    dialog.addEventListener("close", restoreScroll);
+    mobile.addEventListener("change", resize);
+    return () => {
+
+      dialog.removeEventListener("close", restoreScroll);
+      mobile.removeEventListener("change", resize);
+      if (dialog.open) {
+        dialog.close();
+        restoreScroll();
+      }
+    };
+  }, []);
   const s = scenarios[active];
   return (
     <>
@@ -141,8 +192,8 @@ function App() {
           }
         }}
       >
-        <a className="brand" href="#" aria-label="Бизнес Контур — главная">
-          <span className="brand-mark">✳</span> бизнес контур
+        <a className="brand" href="#" aria-label="Бизнес контур — главная">
+          <span className="brand-mark">✳</span> Бизнес контур
         </a>
         <nav
           id="main-navigation"
@@ -153,7 +204,6 @@ function App() {
             ["Решения", "solutions"],
             ["Кейсы", "cases"],
             ["Как работаем", "process"],
-            ["Стоимость", "pricing"],
             ["Вопросы", "faq"],
           ].map(([name, id]) => (
             <a key={id} href={"#" + id} onClick={() => setMenu(false)}>
@@ -161,7 +211,7 @@ function App() {
             </a>
           ))}
         </nav>
-        <a className="nav-cta" href="#contact">
+        <a className="nav-cta" href="#contact" onClick={openBrief}>
           Обсудить задачу{" "}
           <span>
             <ArrowUpRightIcon
@@ -191,7 +241,6 @@ function App() {
           { label: "Решения", id: "solutions", icon: CpuIcon },
           { label: "Кейсы", id: "cases", icon: BriefcaseIcon },
           { label: "Как работаем", id: "process", icon: PathIcon },
-          { label: "Стоимость", id: "pricing", icon: TagIcon },
           { label: "Вопросы", id: "faq", icon: QuestionIcon },
         ].map(({ label, id, icon: Icon }) => (
           <a key={id} href={`#${id}`}>
@@ -211,7 +260,7 @@ function App() {
           </div>
           <div className="hero-copy">
             <div className="hero-signature">
-              <span>✳</span> бизнес контур
+              <span>✳</span> Бизнес контур
             </div>
             <h1 id="hero-title">
               Больше возможностей.
@@ -223,7 +272,7 @@ function App() {
               <br className="desktop" /> до процессов, которые работают сами.
             </p>
             <div className="hero-actions">
-              <a className="button primary" href="#contact">
+              <a className="button primary" href="#contact" onClick={openBrief}>
                 Обсудить внедрение{" "}
                 <span aria-hidden="true">
                   <ArrowUpRightIcon className="ui-icon" size={20} />
@@ -258,6 +307,8 @@ function App() {
           <div>Viber</div>
           <div>Facebook</div>
           <div>Gmail</div>
+          <div>Google Документы</div>
+          <div>CRM</div>
           <div className="notion">Notion</div>
           <span className="more">и другими через API</span>
         </section>
@@ -335,12 +386,10 @@ function App() {
             aria-labelledby={"tab-" + active}
           >
             <div>
-              <span className="subtle">
-                Направление · {s.name}
-              </span>
+              <span className="subtle">Направление · {s.name}</span>
               <h3>{s.title}</h3>
               <p>{s.text}</p>
-              <a className="text-link" href="#contact">
+              <a className="text-link" href="#contact" onClick={openBrief}>
                 Обсудить такой сценарий{" "}
                 <ArrowUpRightIcon
                   className="ui-icon"
@@ -356,7 +405,7 @@ function App() {
                   <i />
                   <i />
                 </span>
-                <span>Бизнес Контур / {s.name}</span>
+                <span>Бизнес контур / {s.name}</span>
                 <span className="demo-mode">Демо</span>
               </div>
               <div
@@ -395,6 +444,91 @@ function App() {
                 </p>
               </div>
             </div>
+          </div>
+        </section>
+        <section
+          className="company-section wrap"
+          id="about"
+          aria-labelledby="company-title"
+        >
+          <div className="company-heading">
+            <span className="company-eyebrow">
+              <span aria-hidden="true">✳</span> О компании
+            </span>
+            <h2 id="company-title">
+              Соединяем AI
+              <br />с вашей
+              <br />
+              <span>ежедневной работой.</span>
+            </h2>
+            <a className="text-link" href="#contact" onClick={openBrief}>
+              Познакомиться и обсудить задачу
+              <ArrowUpRightIcon
+                className="ui-icon"
+                size={20}
+                aria-hidden="true"
+              />
+            </a>
+          </div>
+          <div className="company-description">
+            <p className="company-lead">
+              Бизнес контур — компания по внедрению искусственного интеллекта и
+              автоматизации бизнес-процессов.
+            </p>
+            <p>
+              Помогаем связать обращения клиентов, документы и данные в понятную
+              систему. Создаём AI-ассистентов и подключаем их к инструментам
+              команды, чтобы информация попадала к нужным людям, а повторяющиеся
+              задачи требовали меньше ручной работы.
+            </p>
+            <dl className="company-responsibilities">
+              <div>
+                <dt>
+                  <UserFocusIcon size={22} aria-hidden="true" /> Продажи и
+                  клиентский сервис
+                </dt>
+                <dd>
+                  Создаём ассистентов для поиска клиентов, ответов на вопросы и
+                  обработки заявок. Настраиваем сбор контактов, уточнение
+                  потребности и передачу диалога менеджеру вместе с историей
+                  общения.
+                </dd>
+              </div>
+              <div>
+                <dt>
+                  <ChartBarIcon size={22} aria-hidden="true" /> Звонки, работа
+                  менеджеров и KPI
+                </dt>
+                <dd>
+                  Автоматизируем разбор звонков и создание заказов из
+                  разговоров. Помогаем оценивать качество общения, находить
+                  пропущенные договорённости и собирать отчёты по показателям
+                  команды из CRM.
+                </dd>
+              </div>
+              <div>
+                <dt>
+                  <FilesIcon size={22} aria-hidden="true" /> Документы, почта и
+                  рабочие данные
+                </dt>
+                <dd>
+                  Настраиваем извлечение реквизитов, проверку документов и
+                  подготовку сводок. Входящие письма и сообщения распределяем по
+                  теме, срочности и ответственным — с понятной очередью задач.
+                </dd>
+              </div>
+              <div>
+                <dt>
+                  <ShareNetworkIcon size={22} aria-hidden="true" /> Контент и
+                  социальные сети
+                </dt>
+                <dd>
+                  Внедряем инструменты для составления контент-планов,
+                  подготовки постов и адаптации материалов под разные площадки.
+                  Черновики поступают на согласование вашей команде.
+                </dd>
+              </div>
+            </dl>
           </div>
         </section>
         <section className="process-section" id="process">
@@ -505,8 +639,8 @@ function App() {
                 </ul>
                 <a
                   className="button primary"
-                  href="#contact"
-                  onClick={() => setPlan(p.name)}
+                  href="#contact" onClick={(event) => { setPlan(p.name); openBrief(event); }}
+                  
                 >
                   Обсудить {p.name.toLowerCase()}{" "}
                   <span>
@@ -562,82 +696,103 @@ function App() {
             ))}
           </div>
         </section>
-        <section className="contact wrap" id="contact">
-          <div>
-            <span className="contact-label">Ваш следующий шаг</span>
-            <h2>
-              Давайте найдём,
-              <br />
-              где AI будет полезен
-              <br />
-              именно вам.
-            </h2>
-            <p>
-              Расскажите о задаче — начните с короткого брифа.
-              <br />
-              Без сложных технических заданий.
-            </p>
-            <div className="contact-symbol">✳</div>
-          </div>
-          <form onSubmit={(event) => event.preventDefault()}>
-            <label>
-              Как к вам обращаться
-              <input
-                autoComplete="name"
-                name="name"
-                placeholder="Ваше имя"
-                required
-                maxLength={100}
-              />
-            </label>
-            <label>
-              Email или Telegram
-              <input
-                autoCapitalize="none"
-                spellCheck={false}
-                name="contact"
-                placeholder="name@company.ru или @username"
-                required
-                maxLength={150}
-              />
-            </label>
-            <label>
-              Формат работы
-              <span className="select-field">
-                <select value={plan} onChange={(e) => setPlan(e.target.value)}>
-                  <option>Аудит</option>
-                  <option>Пилот</option>
-                  <option>Масштабирование</option>
-                </select>
-                <CaretDownIcon
-                  className="select-chevron"
-                  size={18}
-                  weight="regular"
-                  aria-hidden="true"
-                />
-              </span>
-            </label>
-            <label>
-              Что хотите автоматизировать?
-              <textarea
-                name="task"
-                placeholder="Например, ответы на типовые вопросы клиентов"
-                required
-                maxLength={3000}
-              />
-            </label>
-            <button className="button primary" type="button">
-              Обсудить бриф{" "}
-              <span aria-hidden="true">
-                <ArrowUpRightIcon
-                  className="ui-icon"
-                  size={20}
-                  weight="regular"
-                />
-              </span>
+        <dialog
+          ref={briefDialogRef}
+          className="brief-dialog"
+          aria-label="Обсудить задачу"
+          onClick={(event) => {
+            if (event.target === event.currentTarget)
+              event.currentTarget.close();
+          }}
+        >
+          <section className="contact wrap" id="contact">
+            <button
+              type="button"
+              className="brief-close"
+              aria-label="Закрыть форму"
+              onClick={() => briefDialogRef.current?.close()}
+            >
+              <XIcon size={22} aria-hidden="true" />
             </button>
-          </form>
-        </section>
+            <div>
+              <span className="contact-label">Ваш следующий шаг</span>
+              <h2>
+                Давайте найдём,
+                <br />
+                где AI будет полезен
+                <br />
+                именно вам.
+              </h2>
+              <p>
+                Расскажите о задаче — начните с короткого брифа.
+                <br />
+                Без сложных технических заданий.
+              </p>
+              <div className="contact-symbol">✳</div>
+            </div>
+            <form onSubmit={(event) => event.preventDefault()}>
+              <label>
+                Как к вам обращаться
+                <input
+                  autoComplete="name"
+                  name="name"
+                  placeholder="Ваше имя"
+                  required
+                  maxLength={100}
+                />
+              </label>
+              <label>
+                Email или Telegram
+                <input
+                  autoCapitalize="none"
+                  spellCheck={false}
+                  name="contact"
+                  placeholder="name@company.ru или @username"
+                  required
+                  maxLength={150}
+                />
+              </label>
+              <label>
+                Формат работы
+                <span className="select-field">
+                  <select
+                    value={plan}
+                    onChange={(e) => setPlan(e.target.value)}
+                  >
+                    <option>Аудит</option>
+                    <option>Пилот</option>
+                    <option>Масштабирование</option>
+                  </select>
+                  <CaretDownIcon
+                    className="select-chevron"
+                    size={18}
+                    weight="regular"
+                    aria-hidden="true"
+                  />
+                </span>
+              </label>
+              <label>
+                Что хотите автоматизировать?
+                <textarea
+                  name="task"
+                  placeholder="Например, ответы на типовые вопросы клиентов"
+                  required
+                  maxLength={3000}
+                />
+              </label>
+              <button className="button primary" type="button">
+                Обсудить бриф{" "}
+                <span aria-hidden="true">
+                  <ArrowUpRightIcon
+                    className="ui-icon"
+                    size={20}
+                    weight="regular"
+                  />
+                </span>
+              </button>
+            </form>
+          </section>
+        </dialog>
       </main>
       <footer className="site-footer">
         <div className="footer-inner wrap">
@@ -651,7 +806,7 @@ function App() {
                 <br />
                 за вашим бизнесом.
               </h2>
-              <a className="footer-project" href="#contact">
+              <a className="footer-project" href="#contact" onClick={openBrief}>
                 Начать с задачи{" "}
                 <span aria-hidden="true">
                   <ArrowUpRightIcon className="ui-icon" size={20} />
@@ -663,7 +818,6 @@ function App() {
               <a href="#solutions">Решения</a>
               <a href="#cases">Кейсы</a>
               <a href="#process">Как работаем</a>
-              <a href="#pricing">Форматы работы</a>
               <a href="#faq">Вопросы и ответы</a>
             </nav>
             <div className="footer-next">
@@ -673,7 +827,7 @@ function App() {
                 <br />
                 хотите сделать проще.
               </p>
-              <a href="#contact">
+              <a href="#contact" onClick={openBrief}>
                 Подготовить бриф{" "}
                 <span aria-hidden="true">
                   <ArrowUpRightIcon className="ui-icon" size={20} />
@@ -685,16 +839,24 @@ function App() {
           <a
             href="#"
             className="footer-wordmark"
-            aria-label="Бизнес Контур — вернуться в начало"
+            aria-label="Бизнес контур — вернуться в начало"
           >
             <span className="footer-flower" aria-hidden="true">
               ✳
             </span>
-            <span>бизнес контур</span>
+            <span>Бизнес контур</span>
           </a>
           <div className="footer-bottom">
-            <small>© {new Date().getFullYear()} Бизнес Контур</small>
+            <small>© {new Date().getFullYear()} Бизнес контур</small>
             <p>Искусственный интеллект. Практическая польза.</p>
+            <nav className="footer-socials" aria-label="Социальные сети">
+              <a href="https://www.facebook.com/leverageindogroup" target="_blank" rel="noopener noreferrer" aria-label="Facebook — открыть в новой вкладке" title="Facebook">
+                <FacebookLogoIcon size={24} weight="fill" aria-hidden="true" />
+              </a>
+              <a href="https://www.youtube.com/@I_am_Kramer" target="_blank" rel="noopener noreferrer" aria-label="YouTube — открыть в новой вкладке" title="YouTube">
+                <YoutubeLogoIcon size={26} weight="fill" aria-hidden="true" />
+              </a>
+            </nav>
             <a href="#">
               Наверх{" "}
               <span aria-hidden="true">

@@ -217,23 +217,23 @@ footer.site-footer{display:block;position:relative;isolation:isolate;overflow:hi
  .header .menu-toggle,.header .nav{display:none}
  body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
  html{scroll-padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
- .mobile-bottom-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));position:fixed;z-index:100;bottom:0;left:0;right:0;padding:8px 6px calc(8px + env(safe-area-inset-bottom,0px));background:#11151f;border-top:1px solid #ffffff18;box-shadow:0 -8px 30px #0003;backdrop-filter:blur(16px)}
+ .mobile-bottom-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));position:fixed;z-index:100;bottom:0;left:0;right:0;padding:8px 6px calc(8px + env(safe-area-inset-bottom,0px));background:#11151f;border-top:1px solid #ffffff18;box-shadow:0 -8px 30px #0003;backdrop-filter:blur(16px)}
  .mobile-bottom-nav a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:48px;min-width:0;border-radius:10px;color:#b8c4da;font-size:10px;line-height:1.3;text-align:center;white-space:nowrap}
  .mobile-bottom-nav a:hover,.mobile-bottom-nav a:focus-visible{color:#a9c3ff;background:#477dff20}
  .mobile-bottom-nav svg{flex-shrink:0}
 }
 
-/* Compact, fully visible navigation for all seven scenarios. */
+/* Compact, fully visible navigation for all eight scenarios. */
 .solution-tabs{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:10px;overflow:visible;padding:0;border:0}
 .solution-tabs button{grid-column:span 3;min-width:0;min-height:58px;padding:14px 16px;border:1px solid #343b49;border-radius:14px;background:#171c26;gap:10px;font-size:14px;line-height:1.35;justify-content:flex-start;text-align:left;white-space:normal}
-.solution-tabs button:nth-child(n+5){grid-column:span 4}
+.solution-tabs button:nth-child(n+5){grid-column:span 3}
 .solution-tabs button>span:last-child{display:none}
 .solution-tabs button>span:first-child{color:#93a7ca}
 .solution-tabs button[aria-selected=true]{background:var(--action);border-color:var(--action);color:#fff;box-shadow:0 4px 18px #477dff24}
 @media(max-width:720px){
  .solution-tabs{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
  .solution-tabs button,.solution-tabs button:nth-child(n+5){grid-column:auto;min-width:0;min-height:54px;padding:12px;font-size:12px;border-radius:12px;gap:8px}
- .solution-tabs button:last-child{grid-column:1/-1;justify-content:center}
+ .solution-tabs button:last-child{grid-column:auto}
 }
 @media(max-width:720px){
  .header .brand{font-size:21px;letter-spacing:-.8px;gap:5px;white-space:nowrap}
@@ -242,4 +242,53 @@ footer.site-footer{display:block;position:relative;isolation:isolate;overflow:hi
 @media(max-width:380px){
  .header .brand{font-size:18px;gap:4px}
  .header .brand-mark{font-size:26px}
+}
+
+.brief-dialog{display:contents;color:inherit}
+.brief-close{display:none}
+@media(max-width:720px){
+ .brief-dialog{display:none;position:fixed;inset:auto 0 0;width:100%;max-width:100%;max-height:92dvh;margin:0;padding:0;border:0;border-radius:24px 24px 0 0;background:#191c24;color:#f1f3f8;overflow-y:auto;overscroll-behavior:contain}
+ .brief-dialog[open]{display:block;animation:brief-slide-in .25s ease-out}
+ .brief-dialog::backdrop{background:#050811b8;backdrop-filter:blur(4px)}
+ .brief-dialog .contact{position:relative;display:block;margin:0;width:100%;max-width:none;padding:32px 22px calc(24px + env(safe-area-inset-bottom,0px));border:0;border-radius:0}
+ .brief-dialog .contact::before{content:'';position:absolute;top:10px;left:calc(50% - 20px);width:40px;height:4px;border-radius:4px;background:#647085}
+ .brief-dialog .brief-close{display:grid;place-items:center;position:absolute;top:16px;right:14px;width:40px;height:40px;border:1px solid #ffffff20;border-radius:50%;background:#252c39;color:#dce4f5}
+ .brief-dialog .contact h2{font-size:25px;line-height:1.2;padding-right:32px;margin-top:12px}
+
+
+ .brief-dialog .contact p{font-size:13px;margin-top:12px}
+ .brief-dialog .contact-symbol{display:none}
+ .brief-dialog form{margin-top:24px}
+}
+@keyframes brief-slide-in{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.brief-dialog[open]{animation:none}}
+
+/* Editorial company introduction between scenarios and delivery process. */
+.company-section{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.7fr);gap:48px;padding-top:30px;padding-bottom:100px}
+.company-heading{padding-top:8px}
+.company-eyebrow{display:flex;align-items:center;gap:12px;color:#a7beff;font-size:12px;letter-spacing:.04em}
+.company-eyebrow>span{font-size:28px;line-height:1}
+.company-heading h2{margin-top:26px;font-size:clamp(28px,2.8vw,38px);font-weight:500;line-height:1.16;letter-spacing:-1.5px}
+.company-heading h2>span{color:#91b2ff}
+.company-heading .text-link{display:inline-flex;align-items:center;gap:12px;min-height:44px;margin-top:30px;font-size:13px}
+.company-description>p{font-size:14px;line-height:1.8;color:var(--text-secondary)}
+.company-description>.company-lead{font-size:21px;line-height:1.5;color:#ecf0f8;margin-bottom:20px}
+.company-responsibilities{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;margin:28px 0;border:1px solid #ffffff16;border-radius:18px;overflow:hidden;background:#171b24}
+.company-responsibilities>div{padding:22px;min-width:0}.company-responsibilities>div:nth-child(odd){border-right:1px solid #ffffff16}.company-responsibilities>div:nth-child(n+3){border-top:1px solid #ffffff16}
+.company-responsibilities dt{display:flex;align-items:flex-start;gap:12px;color:#e3eafa;font-size:14px;font-weight:500}
+.company-responsibilities dt svg{color:#8dadf4;flex-shrink:0}
+.company-responsibilities dd{margin:12px 0 0;color:var(--text-secondary);font-size:13px;line-height:1.7}
+.company-description>.company-principle{border-left:2px solid #477dff;padding-left:18px;font-size:13px;color:#c7d4ec}
+@media(max-width:900px){.company-section{gap:36px}.company-heading h2{font-size:34px}}
+@media(max-width:720px){.company-section{grid-template-columns:1fr;gap:30px;padding-top:10px;padding-bottom:60px}.company-heading h2{font-size:34px;letter-spacing:-1px;margin-top:18px}.company-heading .text-link{margin-top:18px}.company-description>.company-lead{font-size:19px}.company-responsibilities{margin:22px 0}}
+
+@media(max-width:900px) and (min-width:721px){.company-section{grid-template-columns:minmax(0,.7fr) minmax(0,1.5fr);gap:24px}.company-heading h2{font-size:28px}.company-responsibilities>div{padding:16px}}
+@media(max-width:480px){.company-responsibilities{grid-template-columns:1fr}.company-responsibilities>div:nth-child(odd){border-right:0}.company-responsibilities>div+div{border-top:1px solid #ffffff16}}
+
+.footer-socials{display:flex;align-items:center;gap:8px}
+.footer-socials a{display:grid;place-items:center;width:44px;height:44px;border:1px solid #ffffff20;border-radius:50%;color:#b8c8e6;transition:color .2s,background .2s,border-color .2s}
+.footer-socials a:hover{color:#fff;background:#315fd5;border-color:#729aff}
+
+@media(max-width:720px){
+ .brief-dialog[open] .contact{opacity:1;transform:none;transition:none}
 }
